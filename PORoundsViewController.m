@@ -7,9 +7,13 @@
 //
 
 #import "PORoundsViewController.h"
+#import "POTableViewDataSource.h"
 
-@interface PORoundsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface PORoundsViewController () <UITableViewDelegate>
+
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSMutableArray *dataArray;
+@property (strong, nonatomic) POTableViewDataSource *dataSource;
 
 @end
 
@@ -19,7 +23,10 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        
+        NSMutableArray *dataArray = [[NSMutableArray alloc] initWithObjects:@{@"round": @"0"}, nil];
+        self.dataArray = dataArray;
+
     }
     return self;
 }
@@ -27,8 +34,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
+    
+    POTableViewDataSource *dataSource = [POTableViewDataSource new];
+    self.dataSource = dataSource;
+    // 
+    self.tableView.dataSource = dataSource;
+    self.tableView.delegate = dataSource;
+    
+    NSLog(@"array length is: %i", [self.dataArray count]);
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell Identifier"];
     // Do any additional setup after loading the view from its nib.
@@ -39,16 +52,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
-}
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Cell Indentifier"];
-    if(!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell Identifier"];
-    }
-    return cell;
-}
 
 @end

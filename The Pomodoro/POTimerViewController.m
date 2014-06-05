@@ -26,6 +26,7 @@
 
 
 -(void) startTimer{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"RoundStartedNotification" object:nil userInfo:nil];
     NSLog(@"Timer Started");
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1
                                              target:self
@@ -39,8 +40,10 @@
     if (--self.remainingCounts == 0) {
         NSLog(@"you ran out of counts");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"RoundCompleteNotification" object:nil userInfo:nil];
+        [self.timer invalidate];
     } else {
         NSLog(@"remaining counts: %d", self.remainingCounts);
+        self.label.text = [NSString stringWithFormat:@"%i", self.remainingCounts];
     }
 }
 
